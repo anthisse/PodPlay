@@ -1,6 +1,7 @@
 package com.ant.podplay.adapter
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class PodcastListAdapter(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setSearchData(
         podcastSummaryViewData:
         List<SearchViewModel.PodcastSummaryViewData>
@@ -65,6 +67,7 @@ class PodcastListAdapter(
         )
     }
 
+    // Get the size of the podcastSummaryViewList. If the list is null, then return 0
     override fun getItemCount(): Int {
         return podcastSummaryViewList?.size ?: 0
     }
@@ -81,6 +84,4 @@ class PodcastListAdapter(
 
         Glide.with(parentActivity).load(searchView.imageUrl).into(holder.podcastImageView)
     }
-
-    //TODO pg. 492
 }
