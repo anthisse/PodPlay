@@ -9,6 +9,7 @@ import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.ant.podplay.R
+import com.ant.podplay.databinding.ActivityPodcastBinding
 import com.ant.podplay.repository.ItunesRepo
 import com.ant.podplay.service.ItunesService
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -17,11 +18,16 @@ import kotlinx.coroutines.launch
 
 class PodcastActivity : AppCompatActivity() {
     private val TAG = javaClass.simpleName
+    private lateinit var binding: ActivityPodcastBinding
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_podcast)
+        binding = ActivityPodcastBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Set up the search toolbar
+        setupToolbar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -69,5 +75,10 @@ class PodcastActivity : AppCompatActivity() {
             val query = intent.getStringExtra(SearchManager.QUERY) ?: return
             performSearch(query)
         }
+    }
+
+    // Set up the search toolbar
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
     }
 }
