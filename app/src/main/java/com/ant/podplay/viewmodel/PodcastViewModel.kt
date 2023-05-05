@@ -16,7 +16,6 @@ class PodcastViewModel(application: Application) : AndroidViewModel(application)
     private val _podcastLiveData = MutableLiveData<PodcastViewData?>()
     val podcastLiveData: LiveData<PodcastViewData?> = _podcastLiveData
     var podcastRepo: PodcastRepo? = null
-    var activePodcastViewData: PodcastViewData? = null
 
     data class PodcastViewData(
         var subscribed: Boolean = false,
@@ -52,7 +51,6 @@ class PodcastViewModel(application: Application) : AndroidViewModel(application)
     }
 
     // Convert from Podcast models to PodcastViewDatas
-
     private fun podcastToPodcastView(podcast: Podcast): PodcastViewData {
         return PodcastViewData(
             false,

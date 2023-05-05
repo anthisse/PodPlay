@@ -18,9 +18,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     )
 
     // Convert from raw model data to view data
-    private fun itunesPodcastToPodcastSummaryView(
-        itunesPodcast: PodcastResponse.ItunesPodcast
-    ): PodcastSummaryViewData {
+    private fun itunesPodcastToPodcastSummaryView(itunesPodcast: PodcastResponse.ItunesPodcast):
+            PodcastSummaryViewData {
 
         // Return view data
         return PodcastSummaryViewData(

@@ -221,8 +221,11 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
             .show()
     }
 
+    // Add a listener for the back stack
     private fun addBackStackListener() {
         supportFragmentManager.addOnBackStackChangedListener {
+
+            // Make the podcastRecyclerView visible if there's nothing in the back stack
             if (supportFragmentManager.backStackEntryCount == 0) {
                 databinding.podcastRecyclerView.visibility = View.VISIBLE
             }

@@ -1,6 +1,6 @@
 package com.ant.podplay.model
 
-import java.util.Date
+import java.util.*
 
 data class Episode(
     var guid: String = "",

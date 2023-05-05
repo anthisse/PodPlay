@@ -18,7 +18,12 @@ class PodcastDetailsFragment : Fragment() {
     private lateinit var episodeListAdapter: EpisodeListAdapter
     private val podcastViewModel: PodcastViewModel by activityViewModels()
 
+    // When a PodcastDetailsFragment is created
+    // Suppressed warning for deprecated member function setHasOptionsMenu
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Super call onCreate
         super.onCreate(savedInstanceState)
 
         // Add items to the options menu
@@ -27,14 +32,18 @@ class PodcastDetailsFragment : Fragment() {
 
     // Set databinding
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         databinding = FragmentPodcastDetailsBinding.inflate(inflater, container, false)
         return databinding.root
     }
 
+    // When a View is created
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // Super call onViewCreated
         super.onViewCreated(view, savedInstanceState)
+
+        // As long as the fragment is active
         podcastViewModel.podcastLiveData.observe(viewLifecycleOwner) { viewData ->
 
             // As long as the view data isn't null, populate the feed's attributes from it
@@ -55,6 +64,7 @@ class PodcastDetailsFragment : Fragment() {
                 val layoutManager = LinearLayoutManager(activity)
                 databinding.episodeRecyclerView.layoutManager = layoutManager
 
+                // Add a divider between items
                 val dividerItemDecoration = DividerItemDecoration(
                     databinding.episodeRecyclerView.context,
                     layoutManager.orientation
@@ -69,25 +79,12 @@ class PodcastDetailsFragment : Fragment() {
     }
 
     // Inflate the menu details
+    // Suppress deprecated warning for onCreateOptionsMenu
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_details, menu)
-    }
-
-    // Update the controls
-    private fun updateControls() {
-
-        // Check the view data to make sure it's available; return if it is null
-        val viewData = podcastViewModel.activePodcastViewData ?: return
-
-        // Populate the title and description
-        databinding.feedTitleTextView.text = viewData.feedTitle
-        databinding.feedDescTextView.text = viewData.feedDesc
-
-        // Load the podcast image
-        activity?.let { activity ->
-            Glide.with(activity).load(viewData.imageUrl).into(databinding.feedImageView)
-        }
     }
 
     // Return an instance of PodcastDetailsFragment

@@ -14,11 +14,10 @@ class EpisodeListAdapter(
     private var episodeViewList:
     List<PodcastViewModel.EpisodeViewData>?
 ) : RecyclerView.Adapter<EpisodeListAdapter.ViewHolder>() {
-    inner class ViewHolder(
-        databinding: EpisodeItemBinding
-    ) : RecyclerView.ViewHolder(databinding.root) {
-        var episodeViewData: PodcastViewModel.EpisodeViewData? =
-            null
+    inner class ViewHolder(databinding: EpisodeItemBinding) :
+        RecyclerView.ViewHolder(databinding.root) {
+
+        var episodeViewData: PodcastViewModel.EpisodeViewData? = null
         val titleTextView: TextView = databinding.titleView
         val descTextView: TextView = databinding.descView
         val durationTextView: TextView = databinding.durationView
@@ -26,9 +25,8 @@ class EpisodeListAdapter(
             databinding.releaseDateView
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ): EpisodeListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
+            EpisodeListAdapter.ViewHolder {
         return ViewHolder(
             EpisodeItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
@@ -36,10 +34,7 @@ class EpisodeListAdapter(
         )
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder, position:
-        Int
-    ) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val episodeViewList = episodeViewList ?: return
         val episodeView = episodeViewList[position]
         holder.episodeViewData = episodeView
