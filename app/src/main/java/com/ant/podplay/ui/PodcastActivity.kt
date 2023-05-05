@@ -48,7 +48,7 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
         handleIntent(intent)
 
         // Handle a back button press
-        addBackStrackListener()
+        addBackStackListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -63,10 +63,17 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
 
         // Load the SearchManager
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         // Load the search configuration and assign it to the searchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            databinding.podcastRecyclerView.visibility = View.INVISIBLE
+        }
+
+        if (databinding.podcastRecyclerView.visibility == View.INVISIBLE) {
+            searchMenuItem.isVisible = false
+        }
         return true
     }
 
@@ -173,8 +180,7 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
     }
 
     // Create a PodcastDetailsFragment
-    private fun createPodcastDetailsFragment():
-            PodcastDetailsFragment {
+    private fun createPodcastDetailsFragment(): PodcastDetailsFragment {
 
         // Check if the fragment exists
         var podcastDetailsFragment =
@@ -216,7 +222,7 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
             .show()
     }
 
-    private fun addBackStrackListener() {
+    private fun addBackStackListener() {
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 databinding.podcastRecyclerView.visibility = View.VISIBLE

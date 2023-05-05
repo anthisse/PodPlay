@@ -22,18 +22,15 @@ class PodcastDetailsFragment : Fragment() {
 
     // Set databinding
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         databinding = FragmentPodcastDetailsBinding.inflate(inflater, container, false)
         return databinding.root
     }
 
     // Super call onViewCreated
-    override fun onViewCreated(
-        view: View, savedInstanceState:
-        Bundle?
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateControls()
     }
 
     // Inflate the menu details
