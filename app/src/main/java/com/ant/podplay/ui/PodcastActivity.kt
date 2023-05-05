@@ -19,6 +19,7 @@ import com.ant.podplay.databinding.ActivityPodcastBinding
 import com.ant.podplay.repository.ItunesRepo
 import com.ant.podplay.repository.PodcastRepo
 import com.ant.podplay.service.ItunesService
+import com.ant.podplay.service.RssFeedService
 import com.ant.podplay.viewmodel.PodcastViewModel
 import com.ant.podplay.viewmodel.SearchViewModel
 import kotlinx.coroutines.*
@@ -43,6 +44,9 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
 
         // Set up the controls
         updateControls()
+
+        // Create a subscription
+        createSubscription()
 
         // Handle intents
         handleIntent(intent)
@@ -86,27 +90,22 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
 
     // Show details
     override fun onShowDetails(podcastSummaryViewData: SearchViewModel.PodcastSummaryViewData) {
+        podcastSummaryViewData.feedUrl?.let {
+            showProgressBar()
 
-        // Get the feedUrl; return if null
-        val feedUrl = podcastSummaryViewData.feedUrl ?: return
+            // Get the podcast
+            podcastViewModel.getPodcast(podcastSummaryViewData)
+        }
+    }
 
-        // Show the progress bar
-        showProgressBar()
-
-        // Get the podcast view data
-        val podcast = podcastViewModel.getPodcast(podcastSummaryViewData)
-
-        // Hide the progress bar
-        hideProgressBar()
-
-        // If the podcast isn't null
-        if (podcast != null) {
-            // Show the Details Fragment
-            showDetailsFragment()
-
-        } else {
-            // Otherwise, show an error
-            showError("Error loading feed $feedUrl!")
+    private fun createSubscription() {
+        podcastViewModel.podcastLiveData.observe(this) {
+            hideProgressBar()
+            if (it != null) {
+                showDetailsFragment()
+            } else {
+                showError("Error loading feed!")
+            }
         }
     }
 
@@ -149,10 +148,10 @@ class PodcastActivity : AppCompatActivity(), PodcastListAdapter.PodcastListAdapt
         searchViewModel.iTunesRepo = ItunesRepo(service)
 
         // Create a new instance of PodcastRepo
-        podcastViewModel.podcastRepo = PodcastRepo()
+        podcastViewModel.podcastRepo = PodcastRepo(RssFeedService.instance)
     }
 
-    // Set the controls for the activity
+    // Set up the controls for the activity
     private fun updateControls() {
         databinding.podcastRecyclerView.setHasFixedSize(true)
 

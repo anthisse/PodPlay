@@ -73,19 +73,20 @@ class RssFeedService private constructor() {
         return null
     }
 
-    //
+    // Convert from a DOM to feed format
     private fun domToRssFeedResponse(node: Node, rssFeedResponse: RssFeedResponse) {
-
         // If we have the correct node, get some of the node's properties
         if (node.nodeType == Node.ELEMENT_NODE) {
+
+            // Store the node's name, the parent's name, and the grandparent's name
             val nodeName = node.nodeName
             val parentName = node.parentNode.nodeName
             val grandParentName = node.parentNode.parentNode?.nodeName ?: ""
 
-            // If the parent's name is item and the grandparent's name is channel
+            // Test if the child is an episode
             if (parentName == "item" && grandParentName == "channel") {
 
-                // Set the current item. If it isn't null,
+                // Set the current item to the last episode in the list. If it isn't null,
                 val currentItem = rssFeedResponse.episodes?.last()
                 if (currentItem != null) {
                     // Fill the attributes of the current item with the node's attributes
@@ -108,9 +109,8 @@ class RssFeedService private constructor() {
 
             // If the parent is a channel
             if (parentName == "channel") {
-
                 when (nodeName) {
-                    // Fill the attributes of the current item with the node's attributes
+                    // Fill the attributes of the current item with top-level RSS information
                     "title" -> rssFeedResponse.title = node.textContent
                     "description" -> rssFeedResponse.description = node.textContent
                     "itunes:summary" -> rssFeedResponse.summary = node.textContent
